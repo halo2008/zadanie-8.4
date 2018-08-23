@@ -7,10 +7,14 @@ var enemyWins = document.getElementById('enemy-Wins');
 var round = document.getElementById('rounds');
 var win =0 ;
 var enemy = 0;
-var name;
 var currentRound = 0
 var rounds = 0;
 var counter = 0;
+var scoreEnemy; 
+var scoreWiner; 
+var name;
+
+
 var choices = {
   paper: "PAPER",
   rock: 'ROCK',
@@ -22,6 +26,12 @@ var userSelection = document.getElementsByClassName('button');
 
 disableBtn();
 
+function forEachButton (element) {
+  for (let i = 0; i < userSelection.length; i++) {
+    userSelection[i].disabled = element;
+  }
+}
+
 
 newGame.addEventListener('click', function(){
   name = window.prompt('podaj imię');
@@ -31,10 +41,8 @@ newGame.addEventListener('click', function(){
   win = 0;
   enemy = 0;
   yourWins.innerHTML = 'Twoje wygrane ' + win;
-  enemyWins.innerHTML = 'Wygrane przeciwnika ' + enemy;
-  for (var i = 0; i < userSelection.length; i++) { 
-            userSelection[i].disabled = false;
-          }       
+  enemyWins.innerHTML = 'Wygrane przeciwnika ' + enemy; 
+  forEachButton(false);      
 })
 
 
@@ -46,11 +54,7 @@ for(let i = 0; i < userSelection.length; i++) {
     var computerChoice = getComputerChoice();    
     var userChoice = getUserChoice(i);       
   
-    if (
-      computerChoice === choices.paper && userChoice === choices.paper ||
-      computerChoice === choices.rock && userChoice === choices.rock ||
-      computerChoice === choices.scissors && userChoice === choices.scissors
-    ) {
+    if ( computerChoice === userChoice) {
       winnerText.innerHTML = 'w tej rundzie mamy remis';
     }
     
@@ -74,61 +78,62 @@ for(let i = 0; i < userSelection.length; i++) {
     choseElementByComp(computerChoice);
     
     currentRound += 1;
+    scoreEnemy = enemy;
+    scoreWiner = win;
     
-    var scoreEnemy = enemy;
-    var scoreWiner = win;
     
     checkGameEnd();    
-    
-    function choseElementByUser(userChoice) {
-      var user = '';
-      
-      if (userChoice === choices.paper){
-        user = 'Papier';               
-      }
-      else if (userChoice === choices.rock) {       
-        user = 'Kamień';
-      }
-      else {
-        user = 'Nożyce';        
-      }     
-      
-      userText.innerHTML = 'Wybrałeś ' + user; 
-    }
-    
-    function choseElementByComp(computerChoice) {
-      if (computerChoice === choices.paper){        
-        comp = 'Papier';        
-      }
-      else if (computerChoice === choices.rock) {        
-        comp = 'Kamień';
-      }
-      else {       
-        comp = 'Nożyce'; 
-      }
-
-      compText.innerHTML = 'Komputer wybrał ' +comp;
-    }
-    
-    function checkGameEnd() {
-      console.log('rounds', rounds, 'currentRound', currentRound)
-      if (rounds === currentRound) {
-        disableBtn();
-        if (scoreWiner < scoreEnemy){                  
-          alert("Game Over Sucker");
-        }
-        else if (scoreWiner > scoreEnemy) {                  
-          alert("Gratulacje Wygrałeś " + name);
-        }
-      }      
-    }
   })
 }
 
-function disableBtn() {
-  for (var i = 0; i < userSelection.length; i++) { 
-    userSelection[i].disabled = true;
-  }       
+function choseElementByUser(userChoice) {
+  var user = '';
+  
+  if (userChoice === choices.paper){
+    user = 'Papier';               
+  }
+  else if (userChoice === choices.rock) {       
+    user = 'Kamień';
+  }
+  else {
+    user = 'Nożyce';        
+  }     
+  
+  userText.innerHTML = 'Wybrałeś ' + user; 
+}
+
+function choseElementByComp(computerChoice) {
+  if (computerChoice === choices.paper){        
+    comp = 'Papier';        
+  }
+  else if (computerChoice === choices.rock) {        
+    comp = 'Kamień';
+  }
+  else {       
+    comp = 'Nożyce'; 
+  }
+
+  compText.innerHTML = 'Komputer wybrał ' +comp;
+}
+
+function checkGameEnd() {
+  console.log('rounds', rounds, 'currentRound', currentRound)
+  if (rounds === currentRound) {
+    disableBtn();
+    if (scoreWiner < scoreEnemy){                  
+      alert("Game Over Sucker");
+    }
+    else if (scoreWiner > scoreEnemy) {                  
+      alert("Gratulacje Wygrałeś " + name);
+    }
+  }      
+}
+
+
+
+
+function disableBtn() { 
+  forEachButton(true);      
 }
 
 function getComputerChoice() {
