@@ -5,7 +5,7 @@ var compText = document.getElementById('compText');
 var yourWins = document.getElementById('your-Wins');
 var enemyWins = document.getElementById('enemy-Wins');
 var round = document.getElementById('rounds');
-var win =0 ;
+//var win =0 ;
 var enemy = 0;
 var currentRound = 0
 var rounds = 0;
@@ -13,6 +13,15 @@ var counter = 0;
 var scoreEnemy; 
 var scoreWiner; 
 var name;
+
+var params = [
+  {
+    win = 0,   
+  },
+];
+
+
+
 
 
 var choices = {
@@ -26,7 +35,7 @@ var userSelection = document.getElementsByClassName('button');
 
 disableBtn();
 
-function forEachButton (element) {
+function setButtonDisabledState (element) {
   for (let i = 0; i < userSelection.length; i++) {
     userSelection[i].disabled = element;
   }
@@ -38,11 +47,11 @@ newGame.addEventListener('click', function(){
   rounds = parseInt(window.prompt('podaj ilość rund'));
   counter = rounds;
   currentRound = 0;
-  win = 0;
+  params.win;
   enemy = 0;
   yourWins.innerHTML = 'Twoje wygrane ' + win;
   enemyWins.innerHTML = 'Wygrane przeciwnika ' + enemy; 
-  forEachButton(false);      
+  setButtonDisabledState(false);      
 })
 
 
@@ -64,8 +73,8 @@ for(let i = 0; i < userSelection.length; i++) {
       userChoice === choices.scissors && computerChoice === choices.paper
     ) {
       winnerText.innerHTML = 'w tej rundzie wygrał ' + name;
-      win += 1;     
-      yourWins.innerHTML = 'Twoje wygrane ' + win;
+      params.win += 1;     
+      yourWins.innerHTML = 'Twoje wygrane ' + params.win;
     }
     
     else {
@@ -79,7 +88,7 @@ for(let i = 0; i < userSelection.length; i++) {
     
     currentRound += 1;
     scoreEnemy = enemy;
-    scoreWiner = win;
+    scoreWiner = params.win;
     
     
     checkGameEnd();    
@@ -133,7 +142,7 @@ function checkGameEnd() {
 
 
 function disableBtn() { 
-  forEachButton(true);      
+  setButtonDisabledState(true);      
 }
 
 function getComputerChoice() {
