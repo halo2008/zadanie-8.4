@@ -5,24 +5,14 @@ var compText = document.getElementById('compText');
 var yourWins = document.getElementById('your-Wins');
 var enemyWins = document.getElementById('enemy-Wins');
 var round = document.getElementById('rounds');
-//var win =0 ;
-var enemy = 0;
+
 var currentRound = 0
 var rounds = 0;
 var counter = 0;
-var scoreEnemy; 
-var scoreWiner; 
-var name;
 
-var params = [
-  {
-    win = 0,   
-  },
-];
+var numberGame;
 
-
-
-
+var counterDead;
 
 var choices = {
   paper: "PAPER",
@@ -33,28 +23,38 @@ var choicesArr = [choices.paper, choices.rock, choices.scissors];
 
 var userSelection = document.getElementsByClassName('button');
 
-disableBtn();
+var params = 
+  {
+    playerName: [],
+    playerWinThisRound: 0,
+    enemyWinThisRound: 0,
+    playerWins: 0,
+    computerWins: 0,  
+  };
 
-function setButtonDisabledState (element) {
+var gameStats = [];
+
+
+function isDisabledButtons (element) {
   for (let i = 0; i < userSelection.length; i++) {
     userSelection[i].disabled = element;
   }
 }
 
+isDisabledButtons(true);
 
 newGame.addEventListener('click', function(){
-  name = window.prompt('podaj imię');
+  params.playerName = window.prompt('podaj imię');
   rounds = parseInt(window.prompt('podaj ilość rund'));
   counter = rounds;
   currentRound = 0;
-  params.win;
-  enemy = 0;
-  yourWins.innerHTML = 'Twoje wygrane ' + win;
-  enemyWins.innerHTML = 'Wygrane przeciwnika ' + enemy; 
-  setButtonDisabledState(false);      
+  params.playerWinThisRound;
+  params.enemyWinThisRound;
+  yourWins.innerHTML = 'Twoje wygrane ' + params.playerWinThisRound;
+  enemyWins.innerHTML = 'Wygrane przeciwnika ' + params.enemyWinThisRound;
+  
+  isDisabledButtons(false);
 })
-
-
 
 for(let i = 0; i < userSelection.length; i++) {
   userSelection[i].addEventListener("click", function() {
@@ -72,25 +72,22 @@ for(let i = 0; i < userSelection.length; i++) {
       userChoice === choices.rock && computerChoice === choices.scissors || 
       userChoice === choices.scissors && computerChoice === choices.paper
     ) {
-      winnerText.innerHTML = 'w tej rundzie wygrał ' + name;
-      params.win += 1;     
-      yourWins.innerHTML = 'Twoje wygrane ' + params.win;
+      winnerText.innerHTML = 'w tej rundzie wygrał ' + params.playerName;
+      params.playerWinThisRound += 1;     
+      yourWins.innerHTML = 'Twoje wygrane ' + params.playerWinThisRound;
     }
     
     else {
       winnerText.innerHTML = 'w tej rundzie Komputer Wygrał';     
-      enemy += 1;        
-      enemyWins.innerHTML = 'Wygrane przeciwnika ' + enemy;
+      params.enemyWinThisRound += 1;        
+      enemyWins.innerHTML = 'Wygrane przeciwnika ' + params.enemyWinThisRound;
     }      
     
     choseElementByUser(userChoice);
     choseElementByComp(computerChoice);
     
-    currentRound += 1;
-    scoreEnemy = enemy;
-    scoreWiner = params.win;
-    
-    
+    currentRound += 1;      
+
     checkGameEnd();    
   })
 }
@@ -127,23 +124,35 @@ function choseElementByComp(computerChoice) {
 
 function checkGameEnd() {
   console.log('rounds', rounds, 'currentRound', currentRound)
+  
   if (rounds === currentRound) {
-    disableBtn();
-    if (scoreWiner < scoreEnemy){                  
+    gameStats.push({playerName: params.playerName, numberRounds: rounds});
+    isDisabledButtons(true);
+    if (params.playerWinThisRound < params.enemyWinThisRound){                  
       alert("Game Over Sucker");
+      params.computerWins += 1;
+      console.log("wygrana komputera", params.computerWins);
+      
+
     }
-    else if (scoreWiner > scoreEnemy) {                  
-      alert("Gratulacje Wygrałeś " + name);
+    else if (params.playerWinThisRound > params.enemyWinThisRound) {                  
+      alert("Gratulacje Wygrałeś " + params.playerName);
+      params.playerWins += 1;
+      console.log("wygrana gracza", params.playerWins);
     }
+    
   }      
 }
 
+checkGameEnd();
 
+var buttonTable = document.getElementById('statistic');
+var tableBox = document.getElementById('tab');
+var tableCell;
+var newRowInTable;
 
+buttonTable.addEventListener('click', statistic);
 
-function disableBtn() { 
-  setButtonDisabledState(true);      
-}
 
 function getComputerChoice() {
     return choicesArr[Math.floor((Math.random() * 3))];
