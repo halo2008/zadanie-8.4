@@ -34,7 +34,6 @@ var params =
 
 var gameStats = [];
 
-
 function isDisabledButtons (element) {
   for (let i = 0; i < userSelection.length; i++) {
     userSelection[i].disabled = element;
@@ -103,8 +102,7 @@ function choseElementByUser(userChoice) {
   }
   else {
     user = 'Nożyce';        
-  }     
-  
+  } 
   userText.innerHTML = 'Wybrałeś ' + user; 
 }
 
@@ -123,24 +121,21 @@ function choseElementByComp(computerChoice) {
 }
 
 function checkGameEnd() {
-  console.log('rounds', rounds, 'currentRound', currentRound)
-  
+  console.log('rounds', rounds, 'currentRound', currentRound);  
   if (rounds === currentRound) {
     gameStats.push({playerName: params.playerName, numberRounds: rounds});
     isDisabledButtons(true);
     if (params.playerWinThisRound < params.enemyWinThisRound){                  
       alert("Game Over Sucker");
       params.computerWins += 1;
-      console.log("wygrana komputera", params.computerWins);
-      
+      console.log("wygrana komputera", params.computerWins);      
 
     }
     else if (params.playerWinThisRound > params.enemyWinThisRound) {                  
       alert("Gratulacje Wygrałeś " + params.playerName);
       params.playerWins += 1;
       console.log("wygrana gracza", params.playerWins);
-    }
-    
+    }    
   }      
 }
 
@@ -152,7 +147,6 @@ var tableCell;
 var newRowInTable;
 
 buttonTable.addEventListener('click', statistic);
-
 
 function getComputerChoice() {
     return choicesArr[Math.floor((Math.random() * 3))];
