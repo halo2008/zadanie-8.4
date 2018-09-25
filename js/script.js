@@ -5,34 +5,25 @@ var compText = document.getElementById('compText');
 var yourWins = document.getElementById('your-Wins');
 var enemyWins = document.getElementById('enemy-Wins');
 var round = document.getElementById('rounds');
-
+var userSelection = document.getElementsByClassName('button');
 var currentRound = 0
 var rounds = 0;
 var counter = 0;
-
-var numberGame;
-
-var counterDead;
 
 var choices = {
   paper: "PAPER",
   rock: 'ROCK',
   scissors: "SCISSORS"
 };
-var choicesArr = [choices.paper, choices.rock, choices.scissors];
 
-var userSelection = document.getElementsByClassName('button');
+var choicesArr = [choices.paper, choices.rock, choices.scissors];
 
 var params = 
   {
     playerName: [],
     playerWinThisRound: 0,
-    enemyWinThisRound: 0,
-    playerWins: 0,
-    computerWins: 0,  
+    enemyWinThisRound: 0,   
   };
-
-var gameStats = [];
 
 function isDisabledButtons (element) {
   for (let i = 0; i < userSelection.length; i++) {
@@ -47,8 +38,8 @@ newGame.addEventListener('click', function(){
   rounds = parseInt(window.prompt('podaj ilość rund'));
   counter = rounds;
   currentRound = 0;
-  params.playerWinThisRound;
-  params.enemyWinThisRound;
+  params.playerWinThisRound = 0;
+  params.enemyWinThisRound = 0;
   yourWins.innerHTML = 'Twoje wygrane ' + params.playerWinThisRound;
   enemyWins.innerHTML = 'Wygrane przeciwnika ' + params.enemyWinThisRound;
   
@@ -116,37 +107,23 @@ function choseElementByComp(computerChoice) {
   else {       
     comp = 'Nożyce'; 
   }
-
   compText.innerHTML = 'Komputer wybrał ' +comp;
 }
 
 function checkGameEnd() {
   console.log('rounds', rounds, 'currentRound', currentRound);  
   if (rounds === currentRound) {
-    gameStats.push({playerName: params.playerName, numberRounds: rounds});
     isDisabledButtons(true);
     if (params.playerWinThisRound < params.enemyWinThisRound){                  
       alert("Game Over Sucker");
-      params.computerWins += 1;
-      console.log("wygrana komputera", params.computerWins);      
-
     }
     else if (params.playerWinThisRound > params.enemyWinThisRound) {                  
-      alert("Gratulacje Wygrałeś " + params.playerName);
-      params.playerWins += 1;
-      console.log("wygrana gracza", params.playerWins);
+      alert("Gratulacje Wygrałeś " + params.playerName);      
     }    
   }      
 }
 
 checkGameEnd();
-
-var buttonTable = document.getElementById('statistic');
-var tableBox = document.getElementById('tab');
-var tableCell;
-var newRowInTable;
-
-buttonTable.addEventListener('click', statistic);
 
 function getComputerChoice() {
     return choicesArr[Math.floor((Math.random() * 3))];
